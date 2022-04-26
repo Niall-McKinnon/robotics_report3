@@ -78,7 +78,7 @@ if __name__ == '__main__':
 	
 	# Gains are easily adjustable:
 	point_gain = 0.0005
-	radius_gain = 0.005
+	radius_gain = 0.0005
 	
 	delay = 0
 	first = True

@@ -7,6 +7,7 @@ import math
 from ur5e_control.msg import Plan
 from geometry_msgs.msg import Twist
 from std_msgs.msg import Bool
+from std_msgs.msg import UInt8
 
 # Import Sphere Parameters
 from robot_vision_lectures.msg import SphereParams
@@ -81,8 +82,9 @@ def transform_coords(raw_x, raw_y, raw_z, radius):
 		
 
 # define a function that defines a new point
-def add_point(plan, linX, linY, linZ, anX, anY, anZ):
+def add_point(plan, linX, linY, linZ, anX, anY, anZ, mode):
 		plan_point = Twist()
+		plan_mode = UInt8()
 		
 		plan_point.linear.x = linX
 		plan_point.linear.y = linY
@@ -91,7 +93,9 @@ def add_point(plan, linX, linY, linZ, anX, anY, anZ):
 		plan_point.angular.y = anY
 		plan_point.angular.z = anZ
 		
+		plan_mode.data = mode
 		plan.points.append(plan_point)
+		plan.modes.append(plan_mode)
 		
 
 # Callback function for getting current robot position:
@@ -172,27 +176,35 @@ if __name__ == '__main__':
 			print("---\nInitializing motion...")
 			
 			motion = Plan() # New plan
-			
+			y_offset = -0.01
+			z_offset = 0.02
+			hover_height = 0.2
 			# First point, initial position:
-			add_point(motion, current_pos[0], current_pos[1], current_pos[2], current_pos[3], current_pos[4], current_pos[5])
+			add_point(motion, current_pos[0], current_pos[1], current_pos[2], current_pos[3], current_pos[4], current_pos[5], 0)
 			
 			# Second point, directly over ball:
-			add_point(motion, x, y, 0.3, current_pos[3], current_pos[4], current_pos[5])
+			add_point(motion, x, y+y_offset, z + hover_height, current_pos[3], current_pos[4], current_pos[5], 0)
 			
 			# Third point, straignt down to pick up ball:
-			add_point(motion, x, y, (z)+r, current_pos[3], current_pos[4], current_pos[5])
+			add_point(motion, x, y+y_offset, (z)+z_offset, current_pos[3], current_pos[4], current_pos[5], 0)
+			
+			# close the gripper
+			add_point(motion, x, y+y_offset, (z)+z_offset, current_pos[3], current_pos[4], current_pos[5], 2)
 			
 			# Fourth point, straight back up:
-			add_point(motion, x, y, 0.3, current_pos[3], current_pos[4], current_pos[5])
+			add_point(motion, x, y, z+ hover_height, current_pos[3], current_pos[4], current_pos[5], 0)
 			
 			# Fifth point, above drop point:
-			add_point(motion, 0.3, -0.35, 0.3, current_pos[3], current_pos[4], current_pos[5])
+			add_point(motion, 0.3, -0.35, z+ hover_height, current_pos[3], current_pos[4], current_pos[5], 0)
 			
 			# Sixth point, straight down to drop ball:
-			add_point(motion, 0.3, -0.35, (z)+r, current_pos[3], current_pos[4], current_pos[5])
+			add_point(motion, 0.3, -0.35, (z)+z_offset, current_pos[3], current_pos[4], current_pos[5], 0)
+			
+			# open the gripper
+			add_point(motion, 0.3, -0.35, (z)+z_offset, current_pos[3], current_pos[4], current_pos[5], 1)
 			
 			# Seventh point, back up:
-			add_point(motion, 0.3, -0.35, 0.3, current_pos[3], current_pos[4], current_pos[5])
+			add_point(motion, 0.3, -0.35, z+ hover_height, current_pos[3], current_pos[4], current_pos[5], 0)
 			
 			while planning: # This will stop publishing the plan when tracking is disabled
 				

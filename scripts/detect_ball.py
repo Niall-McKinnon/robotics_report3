@@ -44,7 +44,7 @@ if __name__ == '__main__':
 			#lower_yellow_hsv = np.array([20,10,1])
 			#upper_yellow_hsv = np.array([60,255,255])
 			
-			lower_yellow_hsv = np.array([0,80,230])
+			lower_yellow_hsv = np.array([0,80,100])
 			upper_yellow_hsv = np.array([40,255,255])
 			
 			# Use mask to filter the image:
