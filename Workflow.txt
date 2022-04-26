@@ -1,0 +1,27 @@
+1.  Clone any needed repositories.
+
+2.  catkin_make
+
+3.  roscore
+
+4.  Docker:	   rosbag play -l camera_3D.bag (in Downloads)
+	Robot:     rosrun ur5e_control ur5e_ros_connection.sh
+	
+5.	rosrun robotics_report2 detect_ball.py
+
+6.	rosrun robot_vision_lectures crop_visualize_3D
+
+7.	rosrun robotics_report2 sphere_fit.py
+
+8.	roslaunch ur5e_control frame_publisher.launch
+
+9.	rosrun rviz rviz
+
+10.	Docker:    roslaunch ur_gazebo ur5e_bringup.launch
+			   rosrun ur5e_control ur5e_controller
+			   rosrun ur5e_control task_space_trajectory
+			   
+	Robot:	   rosrun ur5e_control ur5e_ros_connection.sh
+			   roslaunch ur5e_control ur5e_controller.launch
+
+
