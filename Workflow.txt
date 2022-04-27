@@ -7,11 +7,11 @@
 4.  Docker:	   rosbag play -l camera_3D.bag (in Downloads)
 	Robot:     rosrun ur5e_control ur5e_ros_connection.sh
 	
-5.	rosrun robotics_report2 detect_ball.py
+5.	rosrun robotics_report3 detect_ball.py
 
 6.	rosrun robot_vision_lectures crop_visualize_3D
 
-7.	rosrun robotics_report2 sphere_fit.py
+7.	rosrun robotics_report3 sphere_fit.py
 
 8.	roslaunch ur5e_control frame_publisher.launch
 

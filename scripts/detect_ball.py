@@ -41,11 +41,16 @@ if __name__ == '__main__':
 			hsv = cv2.cvtColor(rgb_img, cv2.COLOR_RGB2HSV)
 			
 			# Define ranges of the mask:
-			#lower_yellow_hsv = np.array([20,10,1])
-			#upper_yellow_hsv = np.array([60,255,255])
+			# lower_yellow_hsv = np.array([20,10,1])
+			# upper_yellow_hsv = np.array([60,255,255])
 			
-			lower_yellow_hsv = np.array([0,80,100])
-			upper_yellow_hsv = np.array([40,255,255])
+			
+			# NEW WAY: Set entire image to black...
+			lower_yellow_hsv = np.array([0,0,0])
+			upper_yellow_hsv = np.array([0,0,0])
+			
+			# lower_yellow_hsv = np.array([0,80,100])
+			# upper_yellow_hsv = np.array([40,255,255])
 			
 			# Use mask to filter the image:
 			mask = cv2.inRange(hsv, lower_yellow_hsv, upper_yellow_hsv)
@@ -68,8 +73,11 @@ if __name__ == '__main__':
 					cv2.circle(rgb_img, center, 1, (0, 100, 100), 3)
 					
 					# Outline:
-					radius = i[2]
-					cv2.circle(rgb_img, center, radius, (255, 0, 0), 3)
+					# Draw a circle 94% as big as the ball onto the image, preventing background data from coming through.
+					radius = i[2]*0.94
+					radius = np.round(radius).astype("int")
+					cv2.circle(rgb_img, center, radius, (255, 0, 0), -1)
+					cv2.circle(mask, center, radius, (255, 0, 0), -1)
 			
 			# Crop image mask to remove accidental detection:
 			blank_img = np.zeros((720, 1280, 1), dtype = "uint8")
